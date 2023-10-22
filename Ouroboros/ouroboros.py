@@ -7,7 +7,7 @@ class City:
         self.prev = None
 
 class Snake:
-    def __init__(self):
+    def __init__(self, n):
         begin = City(input())
         self.head = begin
         self.stack = deque([])

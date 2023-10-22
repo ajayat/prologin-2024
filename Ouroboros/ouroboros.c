@@ -116,6 +116,12 @@ void free_snake(Snake* snake)
         free(c);
     }
     free(first);
+    // free stomach
+    while (snake->stomach != NULL) {
+        City* c = snake->stomach;
+        snake->stomach = c->next;
+        free(c);
+    }
     free(snake);
 }
 
