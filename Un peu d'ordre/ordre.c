@@ -10,16 +10,24 @@ typedef struct couple {
     int end;
 } couple;
 
-int compare(const void* a, const void* b)
+int* counting_sort(int* array, int n)
 {
-    return (*(int*)a - *(int*)b);
+    int counting[MAX_VALUE + 1] = {0};
+    for (int i = 0; i < n; i++)
+        counting[array[i]]++;
+
+    int* sorted = malloc(n * sizeof(int));
+    int i = 0;
+    for (int v = 0; v < MAX_VALUE+1; v++) {
+        for (int j = 0; j < counting[v]; j++)
+            sorted[i++] = v;
+    }
+    return sorted;
 }
 
 char* order(int k, int n, int* sizes)
 {
-    int* sizes_sorted = malloc(n * sizeof(int));
-    memcpy(sizes_sorted, sizes, n * sizeof(int));
-    qsort(sizes_sorted, n, sizeof(int), compare);
+    int* sizes_sorted = counting_sort(sizes, n);
 
     couple* mapping = malloc(MAX_VALUE * sizeof(couple));
     for (int i = 0; i < n;) {
