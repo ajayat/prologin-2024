@@ -2,15 +2,27 @@ from typing import List
 
 MAX_VALUE = 1000
 
-def counting_sort(sizes: List[int], n: int) -> List[int]:
-    counting = [0] * MAX_VALUE
-    for i in range(n):
-        counting[sizes[i]] += 1
+def counting_sort(k: int, n: int, array: List[int]) -> List[int]:
+    counting = [0] * (MAX_VALUE + 1)
+    sorted = [0] * n
 
-    sorted = []
-    for i in range(MAX_VALUE):
-        sorted.extend([i] * counting[i])
+    for i in range(k):
+        for j in range(i, n, k):
+            counting[array[j]] += 1
+
+        j = i
+        for v in range(MAX_VALUE+1):
+            while counting[v] > 0:
+                sorted[j] = v
+                j += k
+                counting[v] = counting[v] - 1
     return sorted
+
+def is_sorted(n: int, array: List[int]) -> bool:
+    for i in range(n-1):
+        if array[i] > array[i + 1]:
+            return False
+    return True
 
 def order(k: int, n: int, sizes: List[int]) -> None:
     """
@@ -18,21 +30,10 @@ def order(k: int, n: int, sizes: List[int]) -> None:
     :param n: le nombre de personnes
     :param sizes: la liste des tailles de chaque personne
     """
-    mapping = sorted(sizes)
-    mapping_dict = {sizes[i]: [] for i in range(n)}
-    for i in range(n):
-        mapping_dict[mapping[i]].append(i)
-
-    for i in range(n):
-        wanted_pos = mapping_dict[sizes[i]]
-        swap = False
-        for index in wanted_pos:
-            if (index - i) % k == 0:
-                swap = True
-        if (not swap):
-            return "NON"
-        
-    return "OUI"
+    if is_sorted(n, counting_sort(k, n, sizes)):
+        return "OUI"
+    else:
+        return "NON"
 
 
 if __name__ == "__main__":

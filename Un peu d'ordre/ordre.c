@@ -5,55 +5,44 @@
 
 #define MAX_VALUE 1000
 
-typedef struct couple {
-    int begin;
-    int end;
-} couple;
-
-int* counting_sort(int* array, int n)
+int* counting_sort(int k, int n, int* array)
 {
     int counting[MAX_VALUE + 1] = {0};
-    for (int i = 0; i < n; i++)
-        counting[array[i]]++;
+    int* sorted = calloc(n, sizeof(int));
 
-    int* sorted = malloc(n * sizeof(int));
-    int i = 0;
-    for (int v = 0; v < MAX_VALUE+1; v++) {
-        for (int j = 0; j < counting[v]; j++)
-            sorted[i++] = v;
+    for (int i = 0; i < k; i++) {
+        for (int j = i; j < n; j += k)
+            counting[array[j]]++;
+        
+        int j = i;
+        for (int v = 0; v <= MAX_VALUE; v++) {
+            while (counting[v] > 0) {
+                sorted[j] = v;
+                j += k;
+                counting[v]--;
+            }
+        }
     }
     return sorted;
 }
 
-char* order(int k, int n, int* sizes)
+bool is_sorted(int n, int* array)
 {
-    int* sizes_sorted = counting_sort(sizes, n);
-
-    couple* mapping = malloc(MAX_VALUE * sizeof(couple));
-    for (int i = 0; i < n;) {
-        int end = i+1;
-        while (end < n && sizes_sorted[end] == sizes_sorted[i])
-            end++;
-        mapping[sizes_sorted[i]] = (couple){.begin = i, .end = end};
-        i = end;
+    for (int i = 1; i < n; i++) {
+        if (array[i-1] > array[i])
+            return false;
     }
+    return true;
+}
 
-    for (int i = 0; i < n; i++) {
-        couple wanted = mapping[sizes[i]];
-        bool swap = false;
-        for (int pos = wanted.begin; pos < wanted.end; pos++) {
-            if ((pos - i + k) % k == 0)
-                swap = true;
-        }
-        if (!swap) {
-            free(sizes_sorted);
-            free(mapping);
-            return "NON";
-        }
-    }
-    free(sizes_sorted);
-    free(mapping);
-    return "OUI";
+void order(int k, int n, int* sizes)
+{
+    int* sorted = counting_sort(k, n, sizes);
+    if (is_sorted(n, sorted))
+        puts("OUI");
+    else
+        puts("NON");
+    free(sorted);
 }
 
 int main(void)
@@ -64,7 +53,7 @@ int main(void)
     for (int i = 0; i < n; i++)
         scanf("%d", &sizes[i]);
 
-    printf("%s\n", order(k, n, sizes));
+    order(k, n, sizes);
     free(sizes);
     return 0;
 }
