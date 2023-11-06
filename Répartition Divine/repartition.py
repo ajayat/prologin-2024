@@ -8,8 +8,8 @@ def hashe(value) -> None:
     Y = (X * 13 + 36 * Y + 257) % 1000_000_009;
     Z = (Y * value + 4 * value + X * X + 7) % 998_244_353;
 
-def are_compatibles(cities: List[int], subcities: int, god1: int, god2: int):
-    contested = subcities & cities[god1] & cities[god2]
+def are_compatibles(cities: List[int], subcities: int, i: int, j: int):
+    contested = subcities & cities[i] & cities[j]
     s = 0
     while contested:
         s += contested & 1
@@ -17,24 +17,23 @@ def are_compatibles(cities: List[int], subcities: int, god1: int, god2: int):
     return s & 1 == 0
 
 def r_subcities_delta(n, cities: List[int], subcities: int, delta: int):
-    couples = {frozenset({i, i^delta}) for i in range(n)}
     n_compatibles = 0
-    for god1, god2 in couples:
-        if are_compatibles(cities, subcities, god1, god2):
-            n_compatibles += 1
-    return n_compatibles * 2
+    for i in range(n):
+        j = i ^ delta
+        if i < j and are_compatibles(cities, subcities, i, j):
+            n_compatibles += 2
+    return n_compatibles
                            
-def sum_compatible(v: int, n: int, cities: List[int], r: int, requests: List[int]):
-    for s in requests:
+def sum_compatible(n: int, cities: List[int], r: int):
+    for _ in range(r):
+        s = int(input(), 2)
         for delta in range(1, n):
             hashe(r_subcities_delta(n, cities, s, delta))
         print(X, Y, Z)
-        
 
 if __name__ == "__main__":
     v = int(input())
     n = int(input())
     cities = [int(input(), 2) for _ in range(n)]
     r = int(input())
-    requests = [int(input(), 2) for _ in range(r)]
-    sum_compatible(v, n, cities, r, requests)
+    sum_compatible(n, cities, r)

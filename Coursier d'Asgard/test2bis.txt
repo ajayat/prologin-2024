@@ -1,0 +1,13 @@
+6
+Dan Randolf
+Idun Viggo
+Dan Torleif
+Ari Viggo
+Tidar Viggo
+Dan Viggo
+5
+Dan Torleif Dan Randolf
+Dan Randolf Dan Viggo
+Dan Viggo Ari Viggo
+Ari Viggo Tidar Viggo
+Tidar Viggo Idun Viggo

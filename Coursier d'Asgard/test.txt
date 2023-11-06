@@ -1,0 +1,17 @@
+8
+G A
+G I
+G B
+G Y
+H I
+H A
+K I
+K Y
+7
+G A G I
+G I G B
+G I H I
+H I H A
+H I K I
+K I K Y
+K Y G Y
