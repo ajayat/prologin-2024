@@ -9,7 +9,6 @@ God = namedtuple('God', ('firstname', 'name'))
 
 def dfs(adj, u, visited: set, firstnames: set, names: set):
     visited.add(u)
-        
     firstname, name = False, False
 
     for v in adj[u]:
@@ -53,6 +52,7 @@ def valid_path(n: int, gods: List[str], m: int, passations: List[str]):
         adj[god1].append(god2)
         adj[god2].append(god1)
     
+    print(adj)
     if m != n-1 or len(adj) != n:
         print("NON") # graph is not a tree
         return
