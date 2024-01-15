@@ -28,7 +28,9 @@ def sum_compatible(n: int, cities: List[int], r: int):
     for _ in range(r):
         s = int(input(), 2)
         for delta in range(1, n):
-            hashe(r_subcities_delta(n, cities, s, delta))
+            value = r_subcities_delta(n, cities, s, delta)
+            print(value)
+            hashe(value)
         print(X, Y, Z)
 
 if __name__ == "__main__":
